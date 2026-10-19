@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "/Users/Manasi/Desktop/fun/wispr-flow-experiment/index.html"
+        ],
+        "createdAt": "2026-10-19T20:26:22.679Z",
+        "reason": "Claude measured: every visible text element in both views computes >=4.5:1 against its rendered background; static scan can't resolve CSS vars/gradient banner"
+      }
+    ]
+  }
+}

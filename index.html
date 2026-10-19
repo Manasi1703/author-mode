@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flow · Author mode</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" aria-label="Toggle sidebar"><i data-lucide="panel-left"></i></button>
+    <div class="topbar-right">
+      <button class="icon-btn" aria-label="Theme"><i data-lucide="sun"></i></button>
+      <button class="icon-btn" aria-label="Notifications"><i data-lucide="bell"></i></button>
+      <button class="icon-btn" aria-label="Account"><i data-lucide="circle-user-round"></i></button>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="logo">
+      <!-- Symbol from Wispr Flow Logo Kit (wispr-flow-svg.svg), recoloured to currentColor -->
+      <svg viewBox="0 0 126 125" aria-hidden="true"><g fill="currentColor">
+        <rect x="0" y="0" width="18" height="124.3" rx="9"/><rect x="27" y="56.9" width="18" height="54.9" rx="9"/>
+        <rect x="54" y="20.3" width="18" height="82.8" rx="9"/><rect x="81" y="56.9" width="18" height="54.9" rx="9"/>
+        <rect x="108" y="0" width="18" height="124.3" rx="9"/></g></svg>
+      <span>Flow</span>
+    </div>
+    <nav class="nav">
+      <a data-page="dictation" href="#"><i data-lucide="mic"></i>Dictation</a>
+      <a href="#"><i data-lucide="circle-dot"></i>Notetaker</a>
+      <a href="#"><i data-lucide="chart-column"></i>Insights</a>
+      <a href="#"><i data-lucide="book-a"></i>Dictionary</a>
+      <a href="#"><i data-lucide="scissors"></i>Snippets</a>
+      <a href="#"><i data-lucide="type"></i>Style</a>
+      <a href="#"><i data-lucide="wand-sparkles"></i>Transforms</a>
+      <a data-page="scratchpad" href="#"><i data-lucide="notepad-text"></i>Scratchpad</a>
+      <a data-page="author" href="#"><i data-lucide="book-open-text"></i>Author mode</a>
+    </nav>
+    <div class="setup">
+      <h3>Set up Notetaker</h3>
+      <div class="bar"></div>
+      <ul>
+        <li>Take 2-min tour</li><li>Connect calendar</li><li>Import from Granola or Otter</li><li>Set up MCP</li>
+      </ul>
+    </div>
+    <nav class="nav nav-bottom">
+      <a href="#"><i data-lucide="users"></i>Invite your team</a>
+      <a href="#"><i data-lucide="gift"></i>Get a free month</a>
+      <a href="#"><i data-lucide="settings"></i>Settings</a>
+      <a href="#"><i data-lucide="circle-help"></i>Help</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="main-inner">
+      <div class="head">
+        <h1 id="title">Welcome back, Manasi</h1>
+      </div>
+      <div class="cols">
+        <section id="view" class="view"></section>
+        <aside id="rail" class="rail"></aside>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="print" class="print-only"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

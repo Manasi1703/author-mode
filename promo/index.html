@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flow · Author mode promo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+@font-face { font-family: Figtree; src: url(../assets/figtree.ttf); font-weight: 300 900; }
+@font-face { font-family: 'EB Garamond'; src: url(../assets/ebgaramond.ttf); font-weight: 400 800; }
+@font-face { font-family: 'EB Garamond'; src: url(../assets/ebgaramond-italic.ttf); font-weight: 400 800; font-style: italic; }
+@font-face { font-family: 'Google Sans Code'; src: url(../assets/googlesanscode.ttf); }
+:root { --bg: #0c0c0c; --card: #30302f; --line: #343432; --fg: #fcfcfb; --fg2: #b3b2ad; --fg3: #878683; --glow: #ffa946; --dawn: #a26ec1; --paper: #fbf9f4; color-scheme: dark; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #000; overflow: hidden; }
+body { display: grid; place-items: center; font-family: Figtree, system-ui, sans-serif; color: var(--fg); -webkit-font-smoothing: antialiased; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); transform-origin: center; flex: none; }
+#gl { position: absolute; inset: 0; width: 100%; height: 100%; }
+.scene { position: absolute; inset: 0; perspective: 1600px; }
+.serif { font-family: 'EB Garamond', Georgia, serif; }
+em { font-style: italic; color: var(--glow); }
+
+/* chrome: label + caption */
+#label { position: absolute; top: 64px; left: 96px; font: 500 18px 'Google Sans Code', monospace; letter-spacing: .18em; color: var(--fg3); text-transform: uppercase; display: flex; gap: 18px; align-items: center; z-index: 9; }
+#label b { color: var(--glow); font-weight: 500; }
+.logo-mini { display: flex; align-items: center; gap: 10px; color: var(--fg); letter-spacing: 0; font: 600 24px Figtree; text-transform: none; }
+.bars { display: flex; gap: 5px; align-items: center; height: 28px; }
+.bars i { display: block; width: 5px; border-radius: 3px; background: currentColor; }
+.caption { position: absolute; left: 96px; bottom: 88px; font: 500 64px/1.08 Figtree; letter-spacing: -.02em; max-width: 1100px; z-index: 9; }
+.caption .l { display: block; overflow: hidden; padding-bottom: .08em; }
+.caption .l > span { display: inline-block; }
+
+/* S1 */
+#s1 .big { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font: 400 150px/1.02 'EB Garamond'; letter-spacing: -.02em; }
+#s1 .w { display: inline-block; }
+
+/* S2 notes */
+.note { position: absolute; width: 520px; background: var(--card); border-radius: 22px; padding: 28px 32px 22px; box-shadow: 0 30px 80px rgba(0,0,0,.55); }
+.note h3 { font: 600 24px Figtree; margin-bottom: 12px; }
+.note p { color: var(--fg2); font-size: 21px; line-height: 1.5; }
+.note footer { display: flex; justify-content: space-between; color: var(--fg3); font-size: 18px; margin-top: 18px; }
+.meter { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; gap: 22px; align-items: center; height: 300px; color: var(--fg); }
+.meter i { width: 40px; border-radius: 20px; background: currentColor; height: 120px; }
+
+/* S3 menu + book */
+.tools { position: absolute; top: 16px; right: 16px; display: flex; background: #1a1a1a; border: 1px solid var(--line); border-radius: 12px; }
+.tools span { width: 50px; height: 44px; display: grid; place-items: center; border-left: 1px solid var(--line); color: var(--fg2); }
+.tools span:first-child { border-left: 0; }
+.tools svg { width: 22px; height: 22px; }
+.menu { position: absolute; top: 70px; right: 16px; width: 360px; background: #1a1a1a; border: 1px solid var(--line); border-radius: 14px; padding: 8px; box-shadow: 0 20px 50px rgba(0,0,0,.6); transform-origin: top right; }
+.menu div { padding: 12px 14px; border-radius: 9px; font-size: 20px; display: flex; gap: 12px; align-items: center; }
+.menu .lab { font: 500 13px 'Google Sans Code'; letter-spacing: .14em; color: var(--fg3); padding-bottom: 4px; }
+.menu .new { color: var(--glow); border-top: 1px solid var(--line); border-radius: 0 0 9px 9px; }
+.cover { position: absolute; left: 50%; top: 50%; width: 420px; height: 630px; margin: -315px 0 0 -210px; background: var(--paper); color: #1d1b17; border-radius: 6px 14px 14px 6px;
+  box-shadow: inset 14px 0 0 rgba(0,0,0,.06), 0 50px 120px rgba(0,0,0,.6); display: grid; place-content: center; text-align: center; padding: 40px; }
+.cover small { font: 500 14px 'Google Sans Code'; letter-spacing: .25em; color: #5f5a50; }
+.cover h2 { font: 400 64px/1.02 'EB Garamond'; margin: 22px 0; }
+.cover .rule { width: 60px; height: 2px; background: #c9692a; margin: 0 auto; }
+
+/* S4/S5 app panel */
+.app { position: absolute; left: 50%; top: 50%; width: 1360px; height: 660px; margin: -430px 0 0 -680px; background: #1d1d1d; border: 1px solid #2a2a29; border-radius: 26px;
+  display: grid; grid-template-columns: 300px 1fr; overflow: hidden; box-shadow: 0 60px 140px rgba(0,0,0,.6); }
+.binder { border-right: 1px solid var(--line); padding: 34px 18px; }
+.binder .lab { font: 500 14px 'Google Sans Code'; letter-spacing: .18em; color: var(--fg3); padding: 0 12px 16px; }
+.sec { display: flex; gap: 14px; padding: 12px; border-radius: 10px; font-size: 21px; color: var(--fg2); }
+.sec .n { width: 18px; color: var(--fg3); }
+.sec .t { font-style: italic; color: var(--fg3); }
+.sec.on { background: #2a2a29; color: var(--fg); }
+.sec.ch .t { font-style: normal; color: var(--fg); }
+.ed { display: flex; flex-direction: column; }
+.ed-head { display: flex; justify-content: space-between; align-items: center; padding: 34px 44px 10px; }
+.ed-title { font: 400 44px 'EB Garamond'; min-height: 56px; }
+.ed-title .ph { font-style: italic; font-size: 30px; color: var(--fg3); }
+.tabs { display: flex; border: 1px solid var(--line); border-radius: 10px; padding: 3px; font-size: 18px; color: var(--fg2); }
+.tabs span { padding: 6px 18px; border-radius: 7px; }
+.tabs .on { background: #30302f; color: var(--fg); }
+.prose { flex: 1; padding: 16px 44px; font: 400 32px/1.6 'EB Garamond'; }
+.prose .row { display: grid; grid-template-columns: 50px 1fr; }
+.prose .pn { font: 400 16px/2.6 Figtree; color: var(--fg3); }
+.prose .wd { opacity: 0; }
+.foot { display: flex; align-items: center; gap: 16px; border-top: 1px solid var(--line); padding: 18px 26px; font-size: 20px; color: var(--fg2); }
+.mic { width: 52px; height: 52px; border-radius: 50%; background: var(--glow); color: #1a1a1a; display: grid; place-items: center; }
+.mic svg { width: 26px; height: 26px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #ee6a6a; }
+.foot b { color: var(--fg); font-weight: 500; }
+
+/* S6 pages */
+.pages { position: absolute; left: 0; top: 50%; height: 700px; margin-top: -380px; display: flex; gap: 60px; transform-style: preserve-3d; }
+.page { flex: none; width: 466px; height: 700px; background: var(--paper); color: #1d1b17; border-radius: 4px; padding: 70px 58px 40px; display: flex; flex-direction: column; box-shadow: 0 40px 100px rgba(0,0,0,.55); }
+.page .body { flex: 1; font: 400 19px/1.6 'EB Garamond'; text-align: justify; hyphens: auto; }
+.page .body p { text-indent: 1.5em; }
+.page .body p.f { text-indent: 0; }
+.page .folio { text-align: center; font: 400 14px 'EB Garamond'; color: #6c675d; }
+.page .ch { margin-top: 150px; text-align: center; font: 500 13px Figtree; letter-spacing: .25em; color: #6c675d; }
+.page h2 { text-align: center; font: 400 40px 'EB Garamond'; margin: 12px 0 40px; }
+.page.title { display: grid; place-content: center; text-align: center; font: 400 52px/1.1 'EB Garamond'; }
+.page .brk { text-align: center; color: #6c675d; margin: 14px 0; }
+
+/* S7 end */
+#s7 { display: grid; place-content: center; text-align: center; }
+.end-logo { display: flex; align-items: center; justify-content: center; gap: 26px; font: 600 150px Figtree; letter-spacing: -.03em; }
+.end-logo .bars { height: 140px; gap: 22px; }
+.end-logo .bars i { width: 28px; border-radius: 14px; }
+.end-mode { font: italic 400 84px 'EB Garamond'; color: var(--glow); margin-top: 6px; }
+.end-tag { font: 400 34px Figtree; color: var(--fg2); margin-top: 26px; }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 20; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl" width="1920" height="1080"></canvas>
+
+  <div id="label"><span class="logo-mini"><span class="bars" data-bars="5"></span>Flow</span><span>/</span><span>Author mode</span><span>/</span><b id="step">00</b></div>
+
+  <!-- S1: hook -->
+  <section class="scene" id="s1"><div class="big"><div><span class="w">Every</span> <span class="w">book</span> <span class="w">starts</span></div><div><span class="w">as</span> <span class="w"><em>a&nbsp;mess.</em></span></div></div></section>
+
+  <!-- S2: spark -->
+  <section class="scene" id="s2">
+    <div class="meter" data-meter></div>
+    <article class="note n1" style="left:150px;top:190px"><h3>What if a</h3><p>What if a lighthouse keeper starts getting letters from someone who drowned years ago?</p><footer><span>Oct 19</span><span>3:05pm</span></footer></article>
+    <article class="note n2" style="left:1240px;top:150px"><h3>Grandma kept the</h3><p>Grandma kept the kitchen radio on all day, only the news.</p><footer><span>Oct 18</span><span>9:41pm</span></footer></article>
+    <article class="note n3" style="left:1250px;top:560px"><h3>The keeper never</h3><p>The keeper never answers the first letter. He reads it every night.</p><footer><span>Oct 17</span><span>11:02pm</span></footer></article>
+    <article class="note n4" style="left:260px;top:600px"><h3>Cities built for</h3><p>Cities built for cars versus cities built for strangers to meet.</p><footer><span>Oct 16</span><span>7:15am</span></footer></article>
+  </section>
+  <div class="caption" id="c2"><span class="l"><span>Dump every idea</span></span><span class="l"><span>into Scratchpad. <em class="serif">Out loud.</em></span></span></div>
+
+  <!-- S3: build -->
+  <section class="scene" id="s3">
+    <article class="note hero" style="left:700px;top:330px;width:620px">
+      <div class="tools"><span class="bk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M12 7v6M9 10h6"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><span style="color:#ee6a6a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></span></div>
+      <h3>What if a</h3><p>What if a lighthouse keeper starts getting letters from someone who drowned years ago?</p><footer><span>Oct 19</span><span>3:05pm</span></footer>
+      <div class="menu"><div class="lab">ADD TO A BOOK</div><div>📖&nbsp; The Salt Year</div><div class="new">＋&nbsp; New book from this note</div></div>
+    </article>
+    <div class="cover"><small>A NOVEL</small><h2>The Lighthouse Letters</h2><div class="rule"></div></div>
+  </section>
+  <div class="caption" id="c3"><span class="l"><span>Say <em class="serif">“build it into a book.”</em></span></span><span class="l"><span>That’s it. It’s a book now.</span></span></div>
+
+  <!-- S4 + S5: draft, then shape -->
+  <section class="scene" id="s4">
+    <div class="app">
+      <div class="binder"><div class="lab">DRAFT</div>
+        <div class="sec on s-a"><span class="n">§</span><span class="t">Untitled section</span></div>
+        <div class="sec s-b"><span class="n">§</span><span class="t">The first letter came</span></div>
+        <div class="sec s-c"><span class="n">§</span><span class="t">He kept them in a tin</span></div>
+      </div>
+      <div class="ed">
+        <div class="ed-head"><div class="ed-title"><span class="ph">Untitled section</span><span class="name"></span></div><div class="tabs"><span>Notes</span><span class="on">Draft</span><span class="tp">Preview</span></div></div>
+        <div class="prose">
+          <div class="row"><span class="pn">¶1</span><p class="p1">The keeper climbed the ninety stairs every evening, and every evening the sea had something new to say.</p></div>
+          <div class="row"><span class="pn">¶2</span><p class="p2">On the night the letter came, it said nothing at all.</p></div>
+        </div>
+        <div class="foot"><span class="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></svg></span><span class="dot"></span><span class="where">Dictating into <b>§1</b></span></div>
+      </div>
+    </div>
+  </section>
+  <div class="caption" id="c4"><span class="l"><span>Talk the draft into existence.</span></span><span class="l"><span><em class="serif">No chapters required.</em></span></span></div>
+  <div class="caption" id="c5"><span class="l"><span>When the shape shows up,</span></span><span class="l"><span>name it. <em class="serif">Now it’s a chapter.</em></span></span></div>
+
+  <!-- S6: preview -->
+  <section class="scene" id="s6">
+    <div class="pages">
+      <div class="page title">The Lighthouse<br>Letters</div>
+      <div class="page"><div class="body"><div class="ch">CHAPTER 1</div><h2>The Keeper</h2><p class="f">The keeper climbed the ninety stairs every evening, and every evening the sea had something new to say.</p><p>On the night the letter came, it said nothing at all.</p></div><div class="folio">2</div></div>
+      <div class="page"><div class="body"><p class="f">The envelope was dry. That was the first wrong thing. Nothing on the island stayed dry for long, not the bread, not the beds, not the stories the fishermen told about the ones who did not come back.</p><p>He set it on the table beside the lamp and did not open it. He wound the clock. He cleaned the glass. He watched the beam go out over the water and come back empty, the way it always did.</p><div class="brk">⁂</div><p class="f">By the third letter he had stopped pretending not to know the handwriting.</p></div><div class="folio">3</div></div>
+      <div class="page"><div class="body"><div class="ch">CHAPTER 2</div><h2>The Tin</h2><p class="f">He kept them in a biscuit tin with a painted ship on the lid, the paint worn through where his thumb found it each night.</p></div><div class="folio">4</div></div>
+      <div class="page"><div class="body"><p class="f">There were eleven by midwinter. He knew the order without reading the dates, the way you know the stairs in the dark: by the weight of each one, by where they turned.</p><p>On the twelfth night the lamp failed, and in the dark he finally read one aloud.</p></div><div class="folio">5</div></div>
+    </div>
+  </section>
+  <div class="caption" id="c6"><span class="l"><span>Then read it like a book.</span></span><span class="l"><span><em class="serif">Page after page.</em></span></span></div>
+
+  <!-- S7: end card -->
+  <section class="scene" id="s7">
+    <div class="end-logo"><span class="bars" data-bars="5"></span><span>Flow</span></div>
+    <div class="end-mode">Author mode</div>
+    <div class="end-tag">Write your book out loud.</div>
+  </section>
+  <div id="flash"></div>
+</div>
+
+<script>
+// ---------- stage scale ----------
+const stage = document.getElementById('stage');
+const fit = () => stage.style.transform = `scale(${Math.min(innerWidth / 1920, innerHeight / 1080)})`;
+addEventListener('resize', fit); fit();
+
+// Flow logo bars (heights from the logo kit symbol: full, short, mid, short, full)
+const BAR = [1, .44, .67, .44, 1];
+document.querySelectorAll('[data-bars]').forEach((b) => { b.innerHTML = BAR.map((h) => `<i style="height:${h * 100}%"></i>`).join(''); });
+document.querySelector('[data-meter]').innerHTML = Array.from({ length: 9 }, () => '<i></i>').join('');
+
+// Split dictated paragraphs into words so they can "arrive" like live dictation.
+document.querySelectorAll('.p1, .p2').forEach((p) => { p.innerHTML = p.textContent.split(' ').map((w) => `<span class="wd">${w}</span>`).join(' '); });
+
+// ---------- WebGL: flowing voice ribbons ----------
+const gl = document.getElementById('gl').getContext('webgl', { preserveDrawingBuffer: true });
+const vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+const fs = `precision highp float;
+uniform vec2 uRes; uniform float uTime, uAmp, uMix, uFade, uCenter;
+float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.03;a*=.5;}return v;}
+void main(){
+  vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y;
+  float t=uTime*.18;
+  vec2 q=vec2(fbm(uv*1.4+t),fbm(uv*1.4-t+3.1));
+  float f=fbm(uv*2.2+q*2.+vec2(t*.7,-t*.3));
+  vec3 glow=vec3(1.,.663,.275), dawn=vec3(.635,.431,.757), signal=vec3(.906,.545,.835);
+  vec3 col=mix(glow,dawn,smoothstep(.25,.85,f+uMix*.45-.2));
+  col=mix(col,signal,smoothstep(.75,1.,f)*.4);
+  float lines=0.;
+  for(int i=0;i<7;i++){
+    float fi=float(i);
+    float env=exp(-pow(uv.x*1.3,2.));
+    float y=uv.y-uCenter+(sin(uv.x*(4.+fi*.6)+uTime*(1.2+fi*.15)+fi*1.7)*.11*env+(q.x-.5)*.35)*uAmp-(fi-3.)*.028*uAmp;
+    lines+=min(.0018/abs(y),1.2)*(.5+.5*env);
+  }
+  vec3 c=col*pow(f,2.6)*1.25+col*lines*uAmp*.55;
+  c*=1.-dot(uv,uv)*.55;
+  gl_FragColor=vec4(c*uFade+vec3(.047)*(1.-uFade*.0),1.);
+}`;
+const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; };
+const prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog); gl.useProgram(prog);
+gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+const U = Object.fromEntries(['uRes', 'uTime', 'uAmp', 'uMix', 'uFade', 'uCenter'].map((k) => [k, gl.getUniformLocation(prog, k)]));
+gl.uniform2f(U.uRes, 1920, 1080);
+const fx = { amp: .25, mix: 0, fade: .55, center: 0 }; // GSAP drives these
+function draw(t) {
+  gl.uniform1f(U.uTime, t); gl.uniform1f(U.uAmp, fx.amp); gl.uniform1f(U.uMix, fx.mix); gl.uniform1f(U.uFade, fx.fade); gl.uniform1f(U.uCenter, fx.center);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+// ---------- timeline ----------
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+gsap.set('.scene:not(#s1), .caption, #label', { autoAlpha: 0 });
+gsap.set('.caption .l > span', { yPercent: 110 });
+const tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out', duration: 1 } });
+const step = (t, n) => tl.call(() => { $('#step').textContent = n; }, null, t);
+const capIn = (id, t) => tl.set(id, { autoAlpha: 1 }, t).to(`${id} .l > span`, { yPercent: 0, stagger: .12, duration: 1.1 }, t);
+const capOut = (id, t) => tl.to(`${id} .l > span`, { yPercent: -110, stagger: .06, duration: .6, ease: 'expo.in' }, t).set(id, { autoAlpha: 0 }, t + .8);
+
+// S1 — 0 to 3.6: hook
+tl.from('#s1 .w', { yPercent: 120, rotate: 6, autoAlpha: 0, stagger: .14, duration: 1.3 }, .3)
+  .to(fx, { amp: .6, fade: .8, duration: 2.5, ease: 'power2.inOut' }, 0)
+  .to('#s1 .w', { yPercent: -120, autoAlpha: 0, stagger: .05, duration: .7, ease: 'expo.in' }, 2.9);
+
+// S2 — 3.6 to 8.6: spark (voice meter + floating notes)
+step(3.6, '01 SPARK');
+tl.to('#label', { autoAlpha: 1, duration: .6 }, 3.6)
+  .set('#s2', { autoAlpha: 1 }, 3.6)
+  .from('.meter i', { scaleY: 0, stagger: { each: .05, from: 'center' }, duration: .8 }, 3.6)
+  .to('.meter i', { height: (i) => [80, 160, 240, 300, 200, 280, 180, 120, 70][i], repeat: 7, yoyo: true, duration: .25, ease: 'sine.inOut', stagger: { each: .04, from: 'center' } }, 4.1)
+  .to(fx, { amp: 1.15, mix: .3, center: 0, duration: 1.2, ease: 'power3.out' }, 3.8)
+  .from('#s2 .note', { z: -900, y: 160, rotateX: 35, rotateZ: (i) => [-10, 8, -6, 12][i], autoAlpha: 0, stagger: .35, duration: 1.4 }, 4.2)
+  .to('#s2 .note', { y: '-=26', duration: 2.8, ease: 'sine.inOut', stagger: .2 }, 5.4);
+capIn('#c2', 4.6);
+tl.to('#s2 .note:not(.n1)', { autoAlpha: 0, scale: .8, z: -400, stagger: .05, duration: .7, ease: 'expo.in' }, 7.8)
+  .to('.meter', { autoAlpha: 0, scale: .6, duration: .6, ease: 'expo.in' }, 7.8)
+  .to('#s2 .n1', { left: 700, top: 330, width: 620, rotateZ: 0, rotateX: 0, z: 0, duration: .9, ease: 'expo.inOut' }, 7.9)
+  .set('#s2', { autoAlpha: 0 }, 8.8);
+capOut('#c2', 7.8);
+
+// S3 — 8.8 to 12.8: build (menu → cover)
+step(8.8, '02 BUILD');
+tl.set('#s3', { autoAlpha: 1 }, 8.8)
+  .from('.hero .tools', { autoAlpha: 0, y: -8, duration: .4 }, 9.0)
+  .to('.hero .bk', { backgroundColor: '#2a2a29', color: '#fcfcfb', duration: .2 }, 9.35)
+  .from('.hero .menu', { autoAlpha: 0, scale: .85, y: -10, duration: .5, ease: 'back.out(2)' }, 9.45)
+  .to('.hero .menu .new', { backgroundColor: 'rgba(255,169,70,.16)', duration: .25 }, 10.1)
+  .to('.hero .menu .new', { scale: .96, yoyo: true, repeat: 1, duration: .1 }, 10.35)
+  .to(fx, { amp: 1.6, mix: .65, duration: .5, ease: 'expo.out' }, 10.5)
+  .to('#flash', { opacity: .18, duration: .08, yoyo: true, repeat: 1 }, 10.55)
+  .to('.hero', { scale: .5, rotateY: -90, autoAlpha: 0, duration: .6, ease: 'expo.in' }, 10.5)
+  .from('.cover', { rotateY: 90, scale: .6, autoAlpha: 0, duration: 1.1, ease: 'expo.out' }, 11.05)
+  .from('.cover > *', { y: 30, autoAlpha: 0, stagger: .1, duration: .8 }, 11.3)
+  .to(fx, { amp: .7, mix: .45, duration: 1.5, ease: 'power2.out' }, 11.1);
+capIn('#c3', 9.2);
+capOut('#c3', 12.3);
+tl.to('.cover', { scale: .2, x: -600, y: -300, rotateZ: -8, autoAlpha: 0, duration: .8, ease: 'expo.in' }, 12.3)
+  .set('#s3', { autoAlpha: 0 }, 13.1);
+
+// S4 — 13 to 18.6: draft (dictation arrives word by word)
+step(13, '03 DRAFT');
+tl.set('#s4', { autoAlpha: 1 }, 13)
+  .from('.app', { y: 120, rotateX: 18, scale: .92, autoAlpha: 0, duration: 1.2 }, 13)
+  .from('.binder .sec', { x: -30, autoAlpha: 0, stagger: .12, duration: .6 }, 13.4)
+  .to('.p1 .wd', { opacity: 1, stagger: .085, duration: .25, ease: 'none' }, 14.0)
+  .to('.p2 .wd', { opacity: 1, stagger: .09, duration: .25, ease: 'none' }, 16.1)
+  .to('.mic', { scale: 1.12, yoyo: true, repeat: 9, duration: .25, ease: 'sine.inOut' }, 14.0)
+  .to(fx, { amp: .9, center: -.28, duration: 1.2, ease: 'power2.inOut' }, 13.2);
+capIn('#c4', 13.6);
+capOut('#c4', 17.6);
+
+// S5 — 18 to 22.4: shape (name it → chapter)
+step(18.2, '04 SHAPE');
+const NAME = 'The Keeper';
+tl.to('.ed-title .ph', { autoAlpha: 0, duration: .2 }, 18.3)
+  .to({ n: 0 }, { n: NAME.length, duration: .9, ease: 'none', onUpdate() { $('.ed-title .name').textContent = NAME.slice(0, Math.round(this.targets()[0].n)); } }, 18.5)
+  .to('.s-a', { backgroundColor: 'rgba(255,169,70,.14)', duration: .3 }, 19.45)
+  .set('.s-a', { attr: { class: 'sec on s-a ch' } }, 19.5)
+  .set('.s-a .n', { textContent: '1' }, 19.5)
+  .set('.s-a .t', { textContent: 'The Keeper' }, 19.5)
+  .from('.s-a .t', { y: 14, autoAlpha: 0, duration: .5, immediateRender: false }, 19.5)
+  .set('.where b', { textContent: 'Ch 1 · The Keeper' }, 19.5)
+  .to('.s-a', { backgroundColor: '#2a2a29', duration: .8 }, 20)
+  .set('.s-c', { attr: { class: 'sec s-c ch' } }, 20.6)
+  .set('.s-c .n', { textContent: '2' }, 20.6)
+  .set('.s-c .t', { textContent: 'The Tin' }, 20.6)
+  .from('.s-c .t', { y: 14, autoAlpha: 0, duration: .5, immediateRender: false }, 20.6)
+  .to('.tabs .tp', { backgroundColor: '#30302f', color: '#fcfcfb', duration: .2 }, 21.6)
+  .to(fx, { amp: .55, mix: .2, duration: 1 }, 19.5);
+capIn('#c5', 18.5);
+capOut('#c5', 21.6);
+tl.to('.app', { scale: 1.6, autoAlpha: 0, z: 400, duration: .8, ease: 'expo.in' }, 21.8)
+  .set('#s4', { autoAlpha: 0 }, 22.6);
+
+// S6 — 22.4 to 27.4: preview (continuous scroll of pages)
+step(22.4, '05 PREVIEW');
+tl.set('#s6', { autoAlpha: 1 }, 22.4)
+  .fromTo('.pages', { x: 1300, rotateY: -28, z: -200 }, { x: -1150, rotateY: -14, z: 0, duration: 4.8, ease: 'power2.inOut' }, 22.4)
+  .from('.page', { y: (i) => 80 + i * 20, autoAlpha: 0, stagger: .18, duration: 1 }, 22.5)
+  .to(fx, { amp: .4, mix: .55, center: .32, duration: 2 }, 22.4);
+capIn('#c6', 23);
+capOut('#c6', 26.4);
+tl.to('.pages', { autoAlpha: 0, duration: .6, ease: 'power2.in' }, 26.8)
+  .to('#label', { autoAlpha: 0, duration: .4 }, 26.8)
+  .set('#s6', { autoAlpha: 0 }, 27.5);
+
+// S7 — 27.4 to 32: end card
+tl.set('#s7', { autoAlpha: 1 }, 27.4)
+  .to(fx, { amp: 1.35, mix: .4, center: 0, fade: 1, duration: 1.4, ease: 'expo.out' }, 27.3)
+  .from('#s7 .bars i', { scaleY: 0, stagger: .07, duration: .9, ease: 'back.out(2.2)' }, 27.6)
+  .from('#s7 .end-logo > span:last-child', { x: -40, autoAlpha: 0, duration: 1 }, 27.9)
+  .from('.end-mode', { y: 40, autoAlpha: 0, duration: 1 }, 28.4)
+  .from('.end-tag', { y: 20, autoAlpha: 0, duration: 1 }, 28.9)
+  .to('#s7 .bars i', { scaleY: (i) => [.8, 1.5, 1.2, 1.5, .8][i], yoyo: true, repeat: 3, duration: .3, ease: 'sine.inOut', stagger: .05 }, 29.6)
+  .to(fx, { amp: .5, duration: 2 }, 30)
+  .to({}, { duration: .1 }, 32);
+
+// ---------- playback / capture ----------
+const DURATION = tl.duration();
+const capture = new URLSearchParams(location.search).has('capture');
+window.__promo = { duration: DURATION, seek(t) { tl.seek(t, false); draw(t); } };
+if (!capture) {
+  document.fonts.ready.then(() => {
+    const t0 = performance.now();
+    (function loop(now) {
+      const t = ((now - t0) / 1000) % DURATION;
+      tl.seek(t, false); draw(t);
+      requestAnimationFrame(loop);
+    })(t0);
+  });
+} else {
+  stage.style.transform = 'none';
+  draw(0);
+}
+</script>
+</body>
+</html>
